@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:email_app/Message.dart';
+
 class MessageList extends StatefulWidget {
 
   final String title;
@@ -20,12 +22,18 @@ class _MessageListState extends State<MessageList> {
 
   Future loadMessageList() async {
 
-    var content = await rootBundle.loadString('data/message.json');
+    String content = await rootBundle.loadString('data/message.json');
     // Translate from json to dart object
-    var collection = json.decode(content);
+    // List<Message> fait référence au fichier Message.
+    // On lui indique que collection est une list d'élément définie dans Message.dart
+    List<Message> collection = json.decode(content);
+
+    List<Message> _messages = collection.map((json) => Message.fromJson(json)).toList();
+
+    // [1,2,3,4].map((el) => el + 1) --> [2,3,4,5]
 
     setState(() {
-      messages = collection;
+      messages = _messages;
     });
 
   }
@@ -46,16 +54,19 @@ class _MessageListState extends State<MessageList> {
           separatorBuilder: (context, index) => Divider(),
           itemCount: messages.length,
           itemBuilder: (BuildContext context, int index) {
-            var message = messages[index];
+            // access les fields définis dans Message
+            // + safe car on peut appeler uniquement ce qui est définit
+            // et si on fait une erreur de typo on sera notifié
+            Message message = messages[index];
 
             return ListTile(
-              title: Text(message['subject']),
+              title: Text(message.subject),
               leading: CircleAvatar(
                 child: Text('PJ'),
               ),
               isThreeLine: true,
               subtitle: Text(
-                message['body'],
+                message.body,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
