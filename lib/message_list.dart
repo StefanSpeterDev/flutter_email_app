@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:email_app/Message.dart';
+import 'package:email_app/message.dart';
 
 class MessageList extends StatefulWidget {
 
@@ -25,7 +25,7 @@ class _MessageListState extends State<MessageList> {
     String content = await rootBundle.loadString('data/message.json');
     // Translate from json to dart object
     // List<Message> fait référence au fichier Message.
-    // On lui indique que collection est une list d'élément définie dans Message.dart
+    // On lui indique que collection est une list d'élément définie dans message.dart
     List<Message> collection = json.decode(content);
 
     List<Message> _messages = collection.map((json) => Message.fromJson(json)).toList();
