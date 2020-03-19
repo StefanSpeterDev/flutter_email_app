@@ -20,16 +20,16 @@ class _MessageListState extends State<MessageList> {
   Future loadMessageList() async {
     String content = await rootBundle.loadString('data/message.json');
     // Translate from json to dart object
+    List collection = json.decode(content);
+
     // List<Message> fait référence au fichier Message.
+    List<Message> _messages = collection.map((json) => Message.fromJson(json)).toList();
     // On lui indique que collection est une list d'élément définie dans message.dart
     // [1,2,3,4].map((el) => el + 1) --> [2,3,4,5]
 
+
     setState(() {
-      messages = json
-          .decode(content)
-          .map((json) => Message.fromJson(json))
-          .toList()
-          .cast<Message>();
+      messages = _messages;
     });
   }
 
