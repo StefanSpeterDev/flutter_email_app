@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:email_app/app.dart';
 import 'package:email_app/message_list.dart';
 
 void main() => runApp(EmailApp());
@@ -13,7 +13,7 @@ class EmailApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
         accentColor: Colors.red,
       ),
-      home: MessageList(title: 'Flutter Demo Home Page'),
+      home: App(),
     );
   }
 }

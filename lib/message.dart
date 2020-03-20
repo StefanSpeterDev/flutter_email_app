@@ -16,18 +16,19 @@ class Message {
   // so we don't have to do it (like subject, body...)
   // We can check this file in the generated file message.g.dart (generated using :
   // flutter packages pub run build_runner build )
-  factory Message.fromJson(Map<String, dynamic> json)
-  => _$MessageFromJson(json);
+  factory Message.fromJson(Map<String, dynamic> json) =>
+      _$MessageFromJson(json);
 
+  static Future<List<Message>> browse({status = "important"}) async {
+    String url = status == 'important'
+        ? 'http://www.mocky.io/v2/5e74e1893000008388a5f7c9'
+        : 'http://www.mocky.io/v2/5e7385093000007c282e6652';
 
-
-
-  static Future<List<Message>> browse() async {
     // Fetch data from an online API (using http package)
     http.Response response =
-    await http.get('http://www.mocky.io/v2/5e7385093000007c282e6652');
+        await http.get(url);
 
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
     String content = response.body;
 
     // Translate from json to dart object
@@ -35,11 +36,10 @@ class Message {
 
     // List<Message> fait référence au fichier Message.
     List<Message> _messages =
-    collection.map((json) => Message.fromJson(json)).toList();
+        collection.map((json) => Message.fromJson(json)).toList();
     // On lui indique que collection est une list d'élément définit dans message.dart
     // [1,2,3,4].map((el) => el + 1) --> [2,3,4,5]
 
     return _messages;
   }
 }
-
