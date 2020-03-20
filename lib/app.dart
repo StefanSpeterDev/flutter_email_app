@@ -1,40 +1,53 @@
-import 'package:email_app/app_drawer.dart';
-import 'package:email_app/message_list.dart';
+import 'package:email_app/calendar_screen.dart';
+import 'package:email_app/contact_screens.dart';
+import 'package:email_app/inbox_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+
+  int _selectedIndex = 0;
+
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () async {},
-            )
+        body: [
+          InboxScreen(),
+          ContactsScreen(),
+          CalendarScreen(),
+        ].elementAt(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              title: Text('Inbox'),
+              icon: Icon(Icons.mail),
+            ),
+            BottomNavigationBarItem(
+              title: Text('Contacts'),
+              icon: Icon(Icons.people),
+            ),
+            BottomNavigationBarItem(
+              title: Text('Calendar'),
+              icon: Icon(Icons.calendar_today),
+            ),
           ],
-          bottom: TabBar(
-            tabs: <Widget>[
-              Tab(
-                text: 'Important',
-              ),
-              Tab(
-                text: 'Other',
-              ),
-            ],
-          ),
-        ),
-        drawer: AppDrawer(),
-        body: TabBarView(
-            children: <Widget> [
-              MessageList(status:'important'),
-              MessageList(status: 'other'),
-            ],
+          onTap: _onBarItemTap,
+          currentIndex: _selectedIndex,
         ),
       ),
+      length: 2,
     );
+  }
+
+  void _onBarItemTap(int value){
+    setState(() {
+      _selectedIndex = value;
+    });
   }
 }
